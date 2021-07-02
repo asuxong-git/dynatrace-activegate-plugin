@@ -68,7 +68,7 @@ class CustomAtlasRemotePlugin(RemoteBasePlugin):
             return
 
     def query_node_info(self):
-        logger.info('query_node_info Ray Tong')
+        logger.info('query_node_info')
         try:
             
             node_info = self.read(str(self.groupid) + "/processes")
@@ -79,7 +79,7 @@ class CustomAtlasRemotePlugin(RemoteBasePlugin):
             logger.info('Could\'n retrieve node info!', exc_info=1)
 
     def query_cluster_info(self):
-        logger.info('query_cluster_info Ray Tong')
+        logger.info('query_cluster_info')
         try:
             cluster_info = self.read(str(self.groupid) + "/clusters")
             logger.info('Cluster Info:')
@@ -89,7 +89,7 @@ class CustomAtlasRemotePlugin(RemoteBasePlugin):
             logger.info('Could\'n retrieve cluster state info!', exc_info=1)
 
     def report_topology_and_results(self, cluster_info, node_info):
-        logger.info('report_topology_and_results Ray Tong')
+        logger.info('report_topology_and_results')
 
         p = re.compile('^.*(?=(\-shard))', re.IGNORECASE)
 
@@ -101,6 +101,7 @@ class CustomAtlasRemotePlugin(RemoteBasePlugin):
             ###### This section parses the cluster nodes and creates an element for each node in Dynatrace
             for node in node_info["results"]:
                 # match = p.match(node["hostname"])
+                # 20210625 by Ray: fix fail matching
                 match = p.match(node["userAlias"])                
                 logger.info('match:' + match.group().upper())
                 logger.info('cluster name:' + str(cluster["name"]).upper())
